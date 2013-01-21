@@ -1,7 +1,7 @@
 Comments
 
 This app will let you create tokens for online RPG tools like Roll20.net and MapTools.  It works much like TokenTool, available at http://www.rptools.net, and I wouldn't have even thought of doing this without their inspiration.  I'd also like to thank the devlopers at KineticJS (http://kineticjs.com/), and the site http://www.html5canvastutorials.com/ for showing me what tools to use and how to get it done.  All image manipulation is done with straight javascript and the KineticJS library.  
-The app currently runs in recent versions of Firefox and Chrome.  The app will not work with IE9, and only partially works in IE10.  Safari and other browsers are not tested.  It may be updated some day, it may not be.  This is really only a tool I put together to generate images for my other projects, and I'm ready to move on to those.  At any rate, the code is available on github at http://serpentineowl.github.com, and can be forked.  Feel free to add more features, style it better, and add more browser support.
+The app currently runs in recent versions of Firefox and Chrome.  The app will not work with IE9, and only partially works in IE10.  Safari and other browsers are not tested.  It may be updated some day, it may not be.  This is really only a tool I put together to generate images for my other projects, and I'm ready to move on to those.  At any rate, the code is available on github at https://github.com/SerpentineOwl/Html5TokenMaker, and can be forked.  Feel free to add more features, style it better, and add more browser support.
 
 Basic Instructions
 
@@ -17,4 +17,4 @@ Apply your Transparency Mask by first clicking on the mask color with the Overla
 
 When you are satisfied with the Clip Result image, right click on that image to save it. 
 	
-If you have any questions or comments, leave a message on my blog at http://www.serpentineowl.com/2013/01/21/html5-token-maker, or add a question or comment to the github project page at  
+If you have any questions or comments, leave a message on my blog at http://www.serpentineowl.com/2013/01/21/html5-token-maker, or add a question or comment to the github project page at https://github.com/SerpentineOwl/Html5TokenMaker.
