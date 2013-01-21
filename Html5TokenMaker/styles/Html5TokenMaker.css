@@ -1,0 +1,261 @@
+﻿body {
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 12px;
+}
+
+label,
+header
+{
+    padding-left: 10px;
+}
+
+#divWrapper 
+{ 
+ margin: 0 auto;
+ width: 906px;
+}
+
+#divHeader
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 10px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 30px;
+ width: 902px;
+ display: inline;    
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divFooter
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 2px;
+ margin-bottom: 0px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 420px;
+ width: 902px;
+ display: inline;    
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divLeft
+{
+ float: left;
+ color: #333;
+ border: none;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 626px;
+ width: 300px;
+ display: inline;    
+}
+
+#divRight
+{
+ float: left;
+ color: #333;
+ border: none;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ margin-left: 2px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 626px;
+ width: 602px;
+ display: inline;    
+}
+
+#divEdit
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 600px;
+ width: 600px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divEditHeader
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 20px;
+ width: 600px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divColorSelect
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 2px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 50px;
+ width: 298px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divOverlayDrop
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ margin-left: 0px;
+ margin-right: 2px;
+ padding : 0px;
+ height: 147px;
+ width: 147px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divBaseDrop
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 147px;
+ width: 147px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divOverlayHeader
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 2px;
+ padding : 0px;
+ height: 20px;
+ width: 147px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divBaseHeader
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 20px;
+ width: 147px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+#divClip
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 371px;
+ width: 298px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divClipHeader
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ height: 20px;
+ width: 298px;
+ display: inline;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#canvasClip
+{
+	margin: 0 auto;
+	display: block;
+}
+
+#divHiddenClipCanvas
+{
+    display: none;
+}
+
+#divHiddenOverlayCanvas
+{
+    display: none;
+}

@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Html5 Token Maker</title>
+    <link href="styles/Html5TokenMaker.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="divWrapper">
+        <img src="images/SerpentineOwlHeader.png" width="904"/>
+        <div id="divHeader">
+            <label>HTML5 Token Maker - This only works in recent versions of Firefox and Chrome, not in IE.  Safari and others not tested.</label>
+        </div>
+        <div id="divLeft">
+            <div id="divOverlayHeader">
+                <label>Overlay Canvas</label>
+            </div>
+            <div id="divBaseHeader">
+                <label>Base Canvas</label>
+            </div>
+            <div id="divOverlayDrop">
+                <canvas id="canvasOverlayDrop" width="147" height="147"></canvas>
+            </div>
+            <div id="divBaseDrop">
+                <canvas id="canvasBaseDrop" width="147" height="147"></canvas>
+            </div>
+            <div id="divColorSelect">
+                <label>Click on the Overlay to select mask color.</label>
+                <br />
+                <label>Apply Transparency Mask?</label>
+                <input id="chkMask" type="checkbox"/>
+                <canvas id="canvasMaskColor" width="15" height="15"></canvas>
+            </div>
+            <div id="divClipHeader">
+                <label>Clip Result Image (Right Click to save.)</label>
+            </div>
+            <div id="divClip">
+                <div id="divHiddenClipCanvas">
+                    <canvas id="canvasClip" width="298" height="395"></canvas>
+                </div>
+                <div id="divHiddenOverlayCanvas">
+                    <canvas id="canvasHiddenOverlay" width="147" height="147"></canvas>
+                </div>
+                <img id="clipImage" src="" alt=""/>
+            </div>
+        </div>
+        <div id="divRight">
+            <div id="divEditHeader">
+                <label>Edit Canvas (Scroll to zoom Base image.  Click on Overlay or Base image to move.)</label>
+            </div>
+            <div id="divEdit">
+            </div>
+        </div>
+        <div id="divFooter">
+            <header>Comments</header>
+            <section>
+                <ul>
+                    <li>This app will let you create tokens for online RPG tools like Roll20.net and MapTools.  
+                    It works much like TokenTool, available at http://www.rptools.net, and I wouldn't have even thought of doing this without their inspiration.  
+                    I'd also like to thank the devlopers at KineticJS (http://kineticjs.com/), and the site http://www.html5canvastutorials.com/ for showing me what tools to use and how to get it done.  
+                    All image manipulation is done with straight javascript and the KineticJS library.  
+                    The app currently runs in recent versions of Firefox and Chrome.  
+                    The app will not work with IE9, and only partially works in IE10.  
+                    Safari and other browsers are not tested.  
+                    It may be updated some day, it may not be.  
+                    This is really only a tool I put together to generate images for my other projects, and I'm ready to move on to those.    
+                    At any rate, the code is available on github at http://serpentineowl.github.com, and can be forked.  
+                    Feel free to add more features, style it better, and add more browser support.</li>
+                    <li>Basic Instructions:
+                        <ol>
+                            <li>Drag and drop the image you wish to use as the Overlay image into the area under the Overlay Canvas label.  
+                            The image will be fit to the Overlay canvas, and appear full size in the Edit Canvas.
+                            This should be a png image, with a transparent area to show the underlying base image.  
+                            Optionally, it can include a single color (the Transparency Mask) that you can choose to be transparent on the final clipped image.  
+                            Here's an example of an overlay:<img src="images/TokenMask-90px.png" /></li>
+                            <li>Drag and drop the image you wish to use as the Base image into the area under the Base Canvas label.  
+                            The image will be fit to the Base canvas, and appear centered, full size in the Edit Canvas.</li>
+                            <li>Once both an Overlay and a Base image are loaded, the Clip Result image will appear.  
+                            The Clip Result image will update as you perform actions on the Edit Canvas.</li>
+                            <li>You can reposition both the Overlay and Base images on the Edit Canvas by clicking on the image and dragging it around.  
+                            The Clip Result image will update when you stop dragging and let the mouse button back up.</li>
+                            <li>You can zoom in and out of the Base image by scrolling the mouse wheel within the Edit Canvas.  
+                            The Clip Result image will update as you scroll.</li>
+                            <li>Apply your Transparency Mask by first clicking on the mask color with the Overlay Canvas.  
+                            This will update the color that appears next to the Apply Transparency Mask checkbox.  
+                            Then click on the Apply Transparency Mask checkbox to have that color turned to transparency in the Clip Result image.</li>
+                            <li>When you are satisfied with the Clip Result image, right click on that image to save it.</li>
+                        </ol>
+                    </li>
+                    <li>If you have any questions or comments, leave a message on my blog at http://www.serpentineowl.com/2013/01/21/html5-token-maker,  
+                    or add a question or comment to the github project page at </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+    <script type="text/javascript" src="include/kinetic-v4.3.0.min.js">
+    </script>
+    <script type="text/javascript">
+        //Init Variables
+        var maskRed = 0;
+        var maskGreen = 0;
+        var maskBlue = 0;
+        var maskAlpha = 126;
+        var useMaskTransparency = false;
+        var isOverlayLoaded = false;
+        var isBaseLoaded = false;
+
+        //Init Overlay Drop Canvas
+        var overlayDropCanvas = document.getElementById("canvasOverlayDrop");
+        var overlayDropContext = overlayDropCanvas.getContext("2d");
+        overlayDropContext.fillText("Drop an overlay image here", 10, 20);
+
+        //Add Event Lisener for Overlay Drop Canvas click event
+        overlayDropCanvas.addEventListener("mousedown", function (e) {
+            selectX = e.pageX - this.offsetLeft;
+            selectY = e.pageY - this.offsetTop;
+
+            var imageData = overlayDropContext.getImageData(0, 0, overlayDropCanvas.width, overlayDropCanvas.height);
+            var data = imageData.data;
+            maskRed = data[((overlayDropCanvas.width * selectY) + selectX) * 4];
+            maskGreen = data[((overlayDropCanvas.width * selectY) + selectX) * 4 + 1];
+            maskBlue = data[((overlayDropCanvas.width * selectY) + selectX) * 4 + 2];
+            maskAlpha = data[((overlayDropCanvas.width * selectY) + selectX) * 4 + 3];
+
+            maskColorContext.rect(0, 0, 15, 15);
+            maskColorContext.fillStyle = "rgba(" + maskRed + ", " + maskGreen + ", " + maskBlue + ", " + maskAlpha + ")";
+            maskColorContext.fill();
+
+            updateClipCanvas();
+        }, false);
+
+        //Init Base Drop Canvas
+        var baseDropCanvas = document.getElementById("canvasBaseDrop");
+        var baseDropContext = baseDropCanvas.getContext("2d");
+        baseDropContext.fillText("Drop a base image here", 10, 20);
+
+        //Init Clip Canvas
+        var clipCanvas = document.getElementById("canvasClip");
+        var clipContext = clipCanvas.getContext("2d");
+
+        //Init Hidden Overlay Canvas
+        var hiddenOverlayCanvas = document.getElementById("canvasHiddenOverlay");
+        var hiddenOverlayContext = hiddenOverlayCanvas.getContext("2d");
+
+        //Init Mask Color Canvas
+        var maskColorCanvas = document.getElementById("canvasMaskColor");
+        var maskColorContext = maskColorCanvas.getContext("2d");
+        maskColorContext.rect(0, 0, 15, 15);
+        maskColorContext.fillStyle = "rgb(" + maskRed + ", " + maskGreen + ", " + maskBlue + ")";
+        maskColorContext.fill();
+
+        //Init Edit Kinetic.Stage
+        var editStage = new Kinetic.Stage({
+            container: 'divEdit',
+            width: 600,
+            height: 600
+        });
+
+        //Init Layers
+        var overlayLayer = new Kinetic.Layer({ 
+            draggable: true
+        });
+        overlayLayer.on("dragend", function () {
+            updateClipCanvas();
+        });
+        var editLayer = new Kinetic.Layer({
+            draggable: true 
+        });
+        editLayer.on("dragend", function () {
+            updateClipCanvas();
+        });
+
+        overlayLayer.setClearBeforeDraw(true);
+        editLayer.setClearBeforeDraw(true);
+
+        editStage.add(editLayer);
+        editStage.add(overlayLayer);
+
+        //Init Overlay and Base Images
+        overlayImage = document.createElement("img");
+        baseImage = document.createElement("img");
+        clippedBaseImage = document.createElement("img");
+
+        // Event Listener for Overlay Image Load
+        overlayImage.onload = function () {
+            var editStageOverlayImage = new Kinetic.Image({
+                image: overlayImage,
+                x: 0,
+                y: 0,
+                width: overlayImage.width,
+                height: overlayImage.height
+            });
+
+            editStage.remove(overlayLayer);
+            overlayLayer.removeChildren();
+            overlayLayer.add(editStageOverlayImage);
+            overlayLayer.setDragBoundFunc(function (pos) {
+                var newY = pos.y < 0 ? 0 : pos.y;
+                var newY = newY > editStage.getHeight() - editStageOverlayImage.getHeight() ? editStage.getHeight() - editStageOverlayImage.getHeight() : newY;
+                var newX = pos.x < 0 ? 0 : pos.x;
+                var newX = newX > editStage.getWidth() - editStageOverlayImage.getWidth() ? editStage.getWidth() - editStageOverlayImage.getWidth() : newX;
+                return {
+                    x: newX,
+                    y: newY
+                };
+                updateClipCanvas();
+            })
+            editStage.add(overlayLayer);
+
+            var ratio = 1;
+            var scaleX = 0;
+            var scaleY = 0;
+            var scaleWidth = overlayImage.width;
+            var scaleHeight = overlayImage.height;
+
+            if (overlayDropCanvas.width < scaleWidth) {
+                ratio = overlayDropCanvas.width / scaleWidth;
+                scaleWidth = scaleWidth * ratio;
+                scaleHeight = scaleHeight * ratio;
+            }
+
+            if (overlayDropCanvas.height < scaleHeight) {
+                ratio = overlayDropCanvas.height / scaleHeight;
+                scaleWidth = scaleWidth * ratio;
+                scaleHeight = scaleHeight * ratio;
+            }
+
+            scaleX = (overlayDropCanvas.width - scaleWidth) / 2;
+            scaleY = (overlayDropCanvas.height - scaleHeight) / 2;
+
+            overlayDropContext.clearRect(0, 0, overlayDropCanvas.width, overlayDropCanvas.height);
+            overlayDropContext.drawImage(overlayImage, scaleX, scaleY, scaleWidth, scaleHeight);
+            isOverlayLoaded = true;
+
+            updateHiddenOverlayCanvas();
+            updateClipCanvas();
+
+        };
+
+        // Event Listener for Base Image Load
+        baseImage.onload = function () {
+            var baseStageOverlayImageX = (editStage.getWidth() - baseImage.width) / 2;
+            var baseStageOverlayImageY = (editStage.getHeight() - baseImage.height) / 2;
+            var editStageBaseImage = new Kinetic.Image({
+                image: baseImage,
+                x: baseStageOverlayImageX,
+                y: baseStageOverlayImageY,
+                width: baseImage.width,
+                height: baseImage.height
+            });
+
+            editStage.remove(editLayer);
+            editLayer.removeChildren();
+            editLayer.add(editStageBaseImage);
+            editStage.add(editLayer);
+            editLayer.moveDown();
+
+            var ratio = 1;
+            var scaleX = 0;
+            var scaleY = 0;
+            var scaleWidth = baseImage.width;
+            var scaleHeight = baseImage.height;
+
+            if (baseDropCanvas.width < scaleWidth) {
+                ratio = baseDropCanvas.width / scaleWidth;
+                scaleWidth = scaleWidth * ratio;
+                scaleHeight = scaleHeight * ratio;
+            }
+
+            if (baseDropCanvas.height < scaleHeight) {
+                ratio = baseDropCanvas.height / scaleHeight;
+                scaleWidth = scaleWidth * ratio;
+                scaleHeight = scaleHeight * ratio;
+            }
+
+            scaleX = (baseDropCanvas.width - scaleWidth) / 2;
+            scaleY = (baseDropCanvas.height - scaleHeight) / 2;
+
+            baseDropContext.clearRect(0, 0, baseDropCanvas.width, baseDropCanvas.height);
+            baseDropContext.drawImage(baseImage, scaleX, scaleY, scaleWidth, scaleHeight);
+            isBaseLoaded = true;
+            updateClipCanvas();
+
+        };
+
+        // Event Listener for Clipped Base Image Load
+        clippedBaseImage.onload = function () {
+            //Load Images to Clip Canvas
+            clipContext.drawImage(clippedBaseImage, 0, 0);
+            clipContext.drawImage(overlayImage, 0, 0);
+
+            //Pixel Process to selected color transparent
+            var clipImageData = clipContext.getImageData(0, 0, clipCanvas.width, clipCanvas.height);
+            var clipData = clipImageData.data;
+            var overlayImageData = hiddenOverlayContext.getImageData(0, 0, hiddenOverlayCanvas.width, hiddenOverlayCanvas.height);
+            var overlayData = overlayImageData.data;
+
+            for (var i = 0; i < overlayData.length; i += 4) {
+                if (overlayData[i] == maskRed
+                    && overlayData[i + 1] == maskGreen
+                    && overlayData[i + 2] == maskBlue
+                    && overlayData[i + 3] == maskAlpha
+                    && document.getElementById("chkMask").checked == true
+                ) {
+                    clipData[i] = 0;
+                    clipData[i + 1] = 0;
+                    clipData[i + 2] = 0;
+                    clipData[i + 3] = 0;
+                }
+            }
+
+            clipContext.putImageData(clipImageData, 0, 0);
+
+            var dataURL = canvasClip.toDataURL();
+            document.getElementById("clipImage").src = dataURL;
+        };
+
+        function updateHiddenOverlayCanvas() {
+            hiddenOverlayCanvas.width = overlayImage.width;
+            hiddenOverlayCanvas.height = overlayImage.height;
+
+            hiddenOverlayContext.clearRect(0, 0, hiddenOverlayCanvas.width, hiddenOverlayCanvas.height);
+            hiddenOverlayContext.drawImage(overlayImage, 0, 0);
+        };
+
+        function updateClipCanvas() {
+            if (isOverlayLoaded == true && isBaseLoaded == true) {
+                clipCanvas.width = overlayImage.width;
+                clipCanvas.height = overlayImage.height;
+
+                var dataURL = editLayer.toDataURL({
+                    x: overlayLayer.getPosition().x,
+                    y: overlayLayer.getPosition().y,
+                    width: clipCanvas.width,
+                    height: clipCanvas.height
+                });
+                clippedBaseImage.src = "";
+                clippedBaseImage.src = dataURL;
+            }
+        };
+
+        // Event Listener to enable Overlay Drop Stage drag
+        overlayDropCanvas.addEventListener("dragover", function (evt) {
+            evt.preventDefault();
+        }, false);
+
+        // Event Listener to handle Overlay Drop Stage image file
+        overlayDropCanvas.addEventListener("drop", function (evt) {
+            var files = evt.dataTransfer.files;
+            if (files.length > 0) {
+                var file = files[0];
+                if (typeof FileReader !== "undefined" && file.type.indexOf("image") != -1) {
+                    var reader = new FileReader();
+                    reader.onload = function (evt) {
+                        overlayImage.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            evt.preventDefault();
+        }, false);
+
+        // Event Listener to enable Base Drop Stage drag
+        baseDropCanvas.addEventListener("dragover", function (evt) {
+            evt.preventDefault();
+        }, false);
+
+        // Event Listener to handle Base Drop Stage image file
+        baseDropCanvas.addEventListener("drop", function (evt) {
+            var files = evt.dataTransfer.files;
+            if (files.length > 0) {
+                var file = files[0];
+                if (typeof FileReader !== "undefined" && file.type.indexOf("image") != -1) {
+                    var reader = new FileReader();
+                    reader.onload = function (evt) {
+                        baseImage.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            evt.preventDefault();
+        }, false);
+
+        //Google Chrome mouse wheel
+        divEdit.addEventListener("mousewheel", function (e) {
+            var zoomAmount = e.wheelDeltaY * 0.0001;
+            zoomBaseLayer(zoomAmount);
+            e.preventDefault();
+        }, false);
+
+        //FireFox mouse wheel
+        divEdit.addEventListener('DOMMouseScroll', function (e) {
+            var zoomAmount = (-40 * e.detail) * 0.0001;
+            zoomBaseLayer(zoomAmount);
+            e.preventDefault();
+        }, false);
+
+        function zoomBaseLayer(z) {
+            editLayer.setScale(editLayer.getScale().x + z);
+            editLayer.draw();
+            updateClipCanvas();
+        };
+
+        chkMask.onchange = function (e) {
+            updateClipCanvas();
+        };
+
+    </script>
+</body>
+</html>
