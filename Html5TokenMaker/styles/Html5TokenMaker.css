@@ -9,6 +9,16 @@ header
     padding-left: 10px;
 }
 
+.imgDisplay
+{
+ margin-top: 2px;
+ margin-bottom: 2px;
+ margin-left: 2px;
+ margin-right: 2px;
+ display:inline;
+ float:left;
+}
+
 #divWrapper 
 { 
  margin: 0 auto;
@@ -21,7 +31,7 @@ header
  color: #333;
  border: 1px solid #000000;
  background: #ffffff;
- margin-top: 10px;
+ margin-top: 2px;
  margin-bottom: 2px;
  margin-left: 0px;
  margin-right: 0px;
@@ -29,6 +39,41 @@ header
  height: 30px;
  width: 902px;
  display: inline;    
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+#divContributedOverlaysHeader
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ width: 902px;
+ display: inline;    
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+}
+
+
+#divContributedOverlays
+{
+ float: left;
+ color: #333;
+ border: 1px solid #000000;
+ background: #ffffff;
+ margin-top: 0px;
+ margin-bottom: 2px;
+ margin-left: 0px;
+ margin-right: 0px;
+ padding : 0px;
+ width: 902px;
+ display: none;    
  border-radius: 5px;
  -moz-border-radius: 5px;
 }
@@ -44,7 +89,6 @@ header
  margin-left: 0px;
  margin-right: 0px;
  padding : 0px;
- height: 550px;
  width: 902px;
  display: inline;    
  border-radius: 5px;

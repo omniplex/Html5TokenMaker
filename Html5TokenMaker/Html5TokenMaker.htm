@@ -21,9 +21,32 @@
 </head>
 <body>
     <div id="divWrapper">
-        <img src="images/SerpentineOwlHeader.png" width="904"/>
+        <img src="images/SerpentineOwlHeader.png" width="904" alt=""/>
         <div id="divHeader">
             <label>HTML5 Token Maker - This only works in recent versions of Firefox and Chrome, not in IE.  Safari and others not tested.</label>
+        </div>
+        <div id="divContributedOverlaysHeader">
+            <label>Right click and download contributed overlays for use with the Token Maker.  A big thank you to all contributors.</label>
+            <button id="buttonOverlays" type="button" style="display:inline;float:right" >Show Contributed Overlays</button>
+        </div>
+        <div id="divContributedOverlays">
+            <label>Overlays contributed by J. Biggs</label><br />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1b.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1g.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1lb.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1m.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1o.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1p.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1r.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkn1y.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tknb.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkng.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tknlb.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tknm.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkno.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tknp.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tknr.png" width = "100" alt="" />
+            <img class="imgDisplay" src="images/contributed/jbiggs/tkny.png" width = "100" alt="" />
         </div>
         <div id="divLeft">
             <div id="divOverlayHeader">
@@ -424,6 +447,17 @@
 
         chkMask.onchange = function (e) {
             updateClipCanvas();
+        };
+
+        buttonOverlays.onclick = function () {
+            if (this.innerHTML == "Show Contributed Overlays") {
+                this.innerHTML = "Hide Contributed Overlays";
+                divContributedOverlays.style.display = "inline";
+            }
+            else {
+                this.innerHTML = "Show Contributed Overlays";
+                divContributedOverlays.style.display = "none";
+            }
         };
 
     </script>
